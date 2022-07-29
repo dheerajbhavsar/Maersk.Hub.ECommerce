@@ -5,15 +5,19 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Maersk.Hub.ECommerce", "Maersk.Hub.ECommerce\Maersk.Hub.ECommerce.sfproj", "{9A7EF5B4-B533-474D-B717-F8FAEA154F24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.ProductCatalog", "ECommerce.ProductCatalog\ECommerce.ProductCatalog.csproj", "{58721208-E5EA-4A78-BB80-28636B375656}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.ProductCatalog", "ECommerce.ProductCatalog\ECommerce.ProductCatalog.csproj", "{58721208-E5EA-4A78-BB80-28636B375656}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.ProductCatalog.Model", "ECommerce.ProductCatalog.Model\ECommerce.ProductCatalog.Model.csproj", "{B25C1EE2-2232-4D60-AEE5-3D1235FF47B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.ProductCatalog.Model", "ECommerce.ProductCatalog.Model\ECommerce.ProductCatalog.Model.csproj", "{B25C1EE2-2232-4D60-AEE5-3D1235FF47B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.API", "ECommerce.API\ECommerce.API.csproj", "{90C88D8D-41C1-41DE-BC3B-BEE57C56066E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.API", "ECommerce.API\ECommerce.API.csproj", "{90C88D8D-41C1-41DE-BC3B-BEE57C56066E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.CheckoutService", "ECommerce.CheckoutService\ECommerce.CheckoutService.csproj", "{15FF89B5-8D3A-417F-99B9-81DC752CFE5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.CheckoutService", "ECommerce.CheckoutService\ECommerce.CheckoutService.csproj", "{15FF89B5-8D3A-417F-99B9-81DC752CFE5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.CheckoutService.Model", "ECommerce.CheckoutService.Model\ECommerce.CheckoutService.Model.csproj", "{29F5154D-E797-4308-809E-A61F8AE6F15C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.CheckoutService.Model", "ECommerce.CheckoutService.Model\ECommerce.CheckoutService.Model.csproj", "{29F5154D-E797-4308-809E-A61F8AE6F15C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.UserActor", "ECommerce.UserActor\ECommerce.UserActor.csproj", "{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.UserActor.Interfaces", "ECommerce.UserActor.Interfaces\ECommerce.UserActor.Interfaces.csproj", "{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +79,22 @@ Global
 		{29F5154D-E797-4308-809E-A61F8AE6F15C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{29F5154D-E797-4308-809E-A61F8AE6F15C}.Release|x64.ActiveCfg = Release|Any CPU
 		{29F5154D-E797-4308-809E-A61F8AE6F15C}.Release|x64.Build.0 = Release|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Debug|x64.Build.0 = Debug|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Release|x64.ActiveCfg = Release|Any CPU
+		{2EE16EC4-8A57-4247-BD4A-EE8A1B574C8E}.Release|x64.Build.0 = Release|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Debug|x64.Build.0 = Debug|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Release|x64.ActiveCfg = Release|Any CPU
+		{DCB41E57-166D-41D8-BAD7-A176D0BD9A44}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

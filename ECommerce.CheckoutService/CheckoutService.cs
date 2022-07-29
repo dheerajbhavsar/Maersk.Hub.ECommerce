@@ -5,8 +5,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ECommerce.CheckoutService.Model;
+using ECommerce.ProductCatalog.Model;
+using ECommerce.UserActor.Interfaces;
+using Microsoft.ServiceFabric.Actors;
+using Microsoft.ServiceFabric.Actors.Client;
 using Microsoft.ServiceFabric.Data.Collections;
+using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting.Client;
+using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace ECommerce.CheckoutService
@@ -20,14 +27,65 @@ namespace ECommerce.CheckoutService
             : base(context)
         { }
 
-        public Task<CheckoutSummary> CheckoutAsync(string userId)
+        public async Task<CheckoutSummary> CheckoutAsync(string userId)
         {
-            throw new NotImplementedException();
+            var result = new CheckoutSummary
+            {
+                Date = DateTime.UtcNow,
+                Products = new List<CheckoutProduct>()
+            };
+
+            //call user actor to get the basket
+            var userActor = GetUserActor(userId);
+            var basket = await userActor.GetBasket();
+
+            //get catalog client
+            var catalogService = GetProductCatalogService();
+
+            //constuct CheckoutProduct items by calling to the catalog
+            foreach (var basketLine in basket)
+            {
+                var product = await catalogService
+                    .GetProductAsync(basketLine.ProductId);
+                var checkoutProduct = new CheckoutProduct
+                {
+                    Product = product,
+                    Price = product.Price,
+                    Quantity = basketLine.Quantity
+                };
+                result.Products.Add(checkoutProduct);
+            }
+
+            //generate total price
+            result.TotalPrice = result.Products.Sum(p => p.Price);
+
+            //clear user basket
+            await userActor.ClearBasket();
+
+            await AddToHistoryAsync(result);
+
+            return result;
         }
 
-        public Task<CheckoutSummary[]> GetOrderHistoryAsync(string userId)
+        public async Task<CheckoutSummary[]> GetOrderHistoryAsync(string userId)
         {
-            throw new NotImplementedException();
+            var result = new List<CheckoutSummary>();
+            IReliableDictionary<DateTime, CheckoutSummary> history =
+               await StateManager.GetOrAddAsync<IReliableDictionary<DateTime, CheckoutSummary>>("history");
+
+            using (var tx = StateManager.CreateTransaction())
+            {
+                var allProducts = await history.CreateEnumerableAsync(tx, EnumerationMode.Unordered);
+                using var enumerator = allProducts.GetAsyncEnumerator();
+                while (await enumerator.MoveNextAsync(CancellationToken.None))
+                {
+                    KeyValuePair<DateTime, CheckoutSummary> current = enumerator.Current;
+
+                    result.Add(current.Value);
+                }
+            }
+
+            return result.ToArray();
         }
 
         /// <summary>
@@ -39,7 +97,33 @@ namespace ECommerce.CheckoutService
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            return new ServiceReplicaListener[0];
+            return this.CreateServiceRemotingReplicaListeners();
+        }
+
+        private static IUserActor GetUserActor(string userId)
+        {
+            return ActorProxy.Create<IUserActor>(
+                new ActorId(userId),
+                new Uri("fabric:/Maersk.Hub.ECommerce/UserActorService"));
+        }
+
+        private static IProductCatalogService GetProductCatalogService()
+        {
+            var proxy = ServiceProxy.Create<IProductCatalogService>(
+                    new Uri("fabric:/Maersk.Hub.ECommerce/ECommerce.ProductCatalog"),
+                    new ServicePartitionKey(0));
+
+            return proxy;
+        }
+
+        private async Task AddToHistoryAsync(CheckoutSummary checkout)
+        {
+            var history = await StateManager
+                .GetOrAddAsync<IReliableDictionary<DateTime, CheckoutSummary>>("history");
+
+            using var tx = StateManager.CreateTransaction();
+            await history.AddAsync(tx, checkout.Date, checkout);
+            await tx.CommitAsync();
         }
     }
 }
